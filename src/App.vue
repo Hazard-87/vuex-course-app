@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <div class="post" v-for="post in posts" :key="post.id">
+    <h1>
+      {{ postsCount }}
+    </h1>
+    <div class="post" v-for="post in allPosts" :key="post.id">
       <h2>
         {{ post.title }}
       </h2>
@@ -12,21 +15,14 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "App",
-  data() {
-    return {
-      posts: [],
-    };
+  mounted() {
+    this.fetchPosts(5);
   },
-  async mounted() {
-    const res = await fetch(
-      "https://jsonplaceholder.typicode.com/posts?_limit=3"
-    );
-    const posts = await res.json();
-    this.posts = posts;
-  },
-  methods: {},
+  methods: mapActions(["fetchPosts"]),
+  computed: mapGetters(["allPosts", "postsCount"]),
 };
 </script>
 
